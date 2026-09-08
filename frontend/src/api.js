@@ -1,14 +1,18 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: '/api',
+  baseURL:
+    import.meta.env.VITE_API_URL ||
+    'https://ganesh-chaturthi-event-portal.onrender.com/api',
 });
 
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('gcp_token');
+
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
+
   return config;
 });
 
@@ -18,10 +22,12 @@ api.interceptors.response.use(
     if (err?.response?.status === 401) {
       localStorage.removeItem('gcp_token');
       localStorage.removeItem('gcp_user');
+
       if (!window.location.pathname.includes('/login')) {
         window.location.href = '/login';
       }
     }
+
     return Promise.reject(err);
   }
 );
