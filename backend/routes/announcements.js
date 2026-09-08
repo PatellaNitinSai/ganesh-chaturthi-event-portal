@@ -1,26 +1,4 @@
-const express = require('express');
-const db = require('../db');
-const { authenticate, requireRole } = require('../middleware/auth');
-
-const router = express.Router();
-router.use(authenticate);
-
-router.get('/', (req, res) => {
-  res.json(db.prepare('SELECT * FROM announcements ORDER BY date DESC, id DESC').all());
-});
-
-router.post('/', (req, res) => {
-  const { title, content } = req.body;
-  if (!title || !content) return res.status(400).json({ error: 'title and content are required.' });
-  const info = db
-    .prepare('INSERT INTO announcements (title, content, created_by) VALUES (?, ?, ?)')
-    .run(title, content, req.user.id);
-  res.status(201).json(db.prepare('SELECT * FROM announcements WHERE id = ?').get(info.lastInsertRowid));
-});
-
-router.delete('/:id', requireRole('admin'), (req, res) => {
-  db.prepare('DELETE FROM announcements WHERE id = ?').run(req.params.id);
-  res.json({ success: true });
-});
-
-module.exports = router;
+const express=require('express');const db=require('../db');const {authenticate,requireRole}=require('../middleware/auth');const router=express.Router();router.use(authenticate);
+router.get('/',async(req,res,next)=>{try{res.json(await db.all('SELECT * FROM announcements ORDER BY date DESC,id DESC'))}catch(e){next(e)}});
+router.post('/',async(req,res,next)=>{try{const {title,content}=req.body;if(!title||!content)return res.status(400).json({error:'title and content are required.'});res.status(201).json(await db.get('INSERT INTO announcements (title,content,created_by) VALUES ($1,$2,$3) RETURNING *',[title,content,req.user.id]))}catch(e){next(e)}});
+router.delete('/:id',requireRole('admin'),async(req,res,next)=>{try{await db.query('DELETE FROM announcements WHERE id=$1',[req.params.id]);res.json({success:true})}catch(e){next(e)}});module.exports=router;

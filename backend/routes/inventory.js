@@ -1,51 +1,5 @@
-const express = require('express');
-const db = require('../db');
-const { authenticate, requireRole } = require('../middleware/auth');
-
-const router = express.Router();
-router.use(authenticate);
-
-router.get('/', (req, res) => {
-  const rows = db.prepare('SELECT * FROM inventory ORDER BY item_name ASC').all();
-  res.json(rows.map((r) => ({ ...r, total_value: (r.quantity || 0) * (r.unit_cost || 0) })));
-});
-
-router.post('/', (req, res) => {
-  const { item_name, category, quantity, unit, unit_cost, source, notes } = req.body;
-  if (!item_name) return res.status(400).json({ error: 'item_name is required.' });
-  const info = db
-    .prepare(
-      `INSERT INTO inventory (item_name, category, quantity, unit, unit_cost, source, notes)
-       VALUES (?, ?, ?, ?, ?, ?, ?)`
-    )
-    .run(item_name, category || null, quantity || 0, unit || 'pcs', unit_cost || 0, source || 'Purchased', notes || null);
-  const row = db.prepare('SELECT * FROM inventory WHERE id = ?').get(info.lastInsertRowid);
-  res.status(201).json(row);
-});
-
-router.put('/:id', (req, res) => {
-  const existing = db.prepare('SELECT * FROM inventory WHERE id = ?').get(req.params.id);
-  if (!existing) return res.status(404).json({ error: 'Inventory item not found.' });
-  const { item_name, category, quantity, unit, unit_cost, source, notes } = req.body;
-  db.prepare(
-    `UPDATE inventory SET item_name=?, category=?, quantity=?, unit=?, unit_cost=?, source=?, notes=? WHERE id=?`
-  ).run(
-    item_name ?? existing.item_name,
-    category ?? existing.category,
-    quantity ?? existing.quantity,
-    unit ?? existing.unit,
-    unit_cost ?? existing.unit_cost,
-    source ?? existing.source,
-    notes ?? existing.notes,
-    req.params.id
-  );
-  const row = db.prepare('SELECT * FROM inventory WHERE id = ?').get(req.params.id);
-  res.json(row);
-});
-
-router.delete('/:id', requireRole('admin'), (req, res) => {
-  db.prepare('DELETE FROM inventory WHERE id = ?').run(req.params.id);
-  res.json({ success: true });
-});
-
-module.exports = router;
+const express=require('express');const db=require('../db');const {authenticate,requireRole}=require('../middleware/auth');const router=express.Router();router.use(authenticate);
+router.get('/',async(req,res,next)=>{try{const rows=await db.all('SELECT * FROM inventory ORDER BY item_name ASC');res.json(rows.map(r=>({...r,total_value:Number(r.quantity||0)*Number(r.unit_cost||0)})))}catch(e){next(e)}});
+router.post('/',async(req,res,next)=>{try{const {item_name,category,quantity,unit,unit_cost,source,notes}=req.body;if(!item_name)return res.status(400).json({error:'item_name is required.'});const r=await db.get('INSERT INTO inventory (item_name,category,quantity,unit,unit_cost,source,notes) VALUES ($1,$2,$3,$4,$5,$6,$7) RETURNING *',[item_name,category||null,quantity||0,unit||'pcs',unit_cost||0,source||'Purchased',notes||null]);res.status(201).json(r)}catch(e){next(e)}});
+router.put('/:id',async(req,res,next)=>{try{const x=await db.get('SELECT * FROM inventory WHERE id=$1',[req.params.id]);if(!x)return res.status(404).json({error:'Inventory item not found.'});const b=req.body;const r=await db.get('UPDATE inventory SET item_name=$1,category=$2,quantity=$3,unit=$4,unit_cost=$5,source=$6,notes=$7 WHERE id=$8 RETURNING *',[b.item_name??x.item_name,b.category??x.category,b.quantity??x.quantity,b.unit??x.unit,b.unit_cost??x.unit_cost,b.source??x.source,b.notes??x.notes,req.params.id]);res.json(r)}catch(e){next(e)}});
+router.delete('/:id',requireRole('admin'),async(req,res,next)=>{try{await db.query('DELETE FROM inventory WHERE id=$1',[req.params.id]);res.json({success:true})}catch(e){next(e)}});module.exports=router;
