@@ -14,14 +14,14 @@ const NAV_ITEMS = [
   { to: '/settings', label: 'Settings', icon: '⚙️' },
 ];
 
-export default function Sidebar() {
+export default function Sidebar({ open = false, onClose = () => {} }) {
   const { user, logout } = useAuth();
 
   return (
-    <aside className="sidebar">
+    <aside className={"sidebar" + (open ? " mobile-open" : "")}>
       <div className="sidebar-brand">
         <div className="brand-emoji">🐘</div>
-        <div className="brand-title">Ganesh Chaturthi</div>
+        <div className="brand-title">Poleramma Gudi Bazaar Youth</div>
         <div className="brand-subtitle">Event Portal</div>
         <div className="brand-tagline">Plan | Manage | Celebrate</div>
       </div>
@@ -32,6 +32,7 @@ export default function Sidebar() {
             key={item.to}
             to={item.to}
             end={item.end}
+            onClick={onClose}
             className={({ isActive }) => 'sidebar-link' + (isActive ? ' active' : '')}
           >
             <span className="sidebar-icon">{item.icon}</span>

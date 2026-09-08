@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
 import Sidebar from './components/Sidebar.jsx';
@@ -16,11 +16,20 @@ import Announcements from './pages/Announcements.jsx';
 import Settings from './pages/Settings.jsx';
 
 function Layout({ title, children }) {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
   return (
     <div className="app-shell">
-      <Sidebar />
+      <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+      {sidebarOpen && (
+        <button
+          className="mobile-overlay"
+          aria-label="Close navigation"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
       <main className="main-area">
-        <Topbar title={title} />
+        <Topbar title={title} onMenuClick={() => setSidebarOpen(true)} />
         <div className="page-content">{children}</div>
       </main>
     </div>
