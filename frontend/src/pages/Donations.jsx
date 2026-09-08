@@ -150,7 +150,7 @@ export default function Donations() {
           </div>
         </div>
         {loading ? <div className="loading">Loading…</div> : (
-          <table className="data-table">
+          <div className="table-scroll"><table className="data-table">
             <thead>
               <tr><th>Date</th><th>Name</th><th>Contact</th><th>Type</th><th>Amount</th><th>Mode</th><th>Receipt</th><th>Actions</th></tr>
             </thead>
@@ -173,6 +173,7 @@ export default function Donations() {
               {rows.length === 0 && <tr><td colSpan="8" className="empty-row">No donations found.</td></tr>}
             </tbody>
           </table>
+          </div>
         )}
       </div>
     </div>

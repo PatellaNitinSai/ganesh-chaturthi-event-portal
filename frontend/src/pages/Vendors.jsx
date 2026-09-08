@@ -86,7 +86,7 @@ export default function Vendors() {
       <div className="panel">
         <div className="panel-header"><h3>All Vendors & Suppliers</h3></div>
         {loading ? <div className="loading">Loading…</div> : (
-          <table className="data-table">
+          <div className="table-scroll"><table className="data-table">
             <thead>
               <tr><th>Name</th><th>Category</th><th>Contact</th><th>Agreed / Quoted</th><th>Advance Paid</th><th>Settled</th><th>Balance Due</th><th>Actions</th></tr>
             </thead>
@@ -113,7 +113,7 @@ export default function Vendors() {
                         <div className="vendor-detail">
                           <b>Payment history for {v.name}:</b>
                           {expanded.expenses.length === 0 ? <p>No expense entries linked yet.</p> : (
-                            <table className="data-table nested">
+                            <div className="table-scroll"><table className="data-table nested">
                               <thead><tr><th>Date</th><th>Description</th><th>Total</th><th>Advance</th><th>Settled</th></tr></thead>
                               <tbody>
                                 {expanded.expenses.map((e) => (
@@ -124,6 +124,7 @@ export default function Vendors() {
                                 ))}
                               </tbody>
                             </table>
+                            </div>
                           )}
                         </div>
                       </td>
@@ -134,6 +135,7 @@ export default function Vendors() {
               {rows.length === 0 && <tr><td colSpan="8" className="empty-row">No vendors added yet.</td></tr>}
             </tbody>
           </table>
+          </div>
         )}
       </div>
     </div>

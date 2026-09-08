@@ -88,7 +88,7 @@ export default function Settings() {
 
       <div className="panel">
         <div className="panel-header"><h3>Event Progress Phases</h3></div>
-        <table className="data-table">
+        <div className="table-scroll"><table className="data-table">
           <thead><tr><th>Phase</th><th>Status</th></tr></thead>
           <tbody>
             {phases.map((p) => (
@@ -106,6 +106,7 @@ export default function Settings() {
             ))}
           </tbody>
         </table>
+        </div>
       </div>
 
       <div className="panel">
@@ -134,7 +135,7 @@ export default function Settings() {
             <div className="form-actions span-2"><button type="submit" className="btn-primary">Create Login</button></div>
           </form>
 
-          <table className="data-table">
+          <div className="table-scroll"><table className="data-table">
             <thead><tr><th>Name</th><th>Username</th><th>Role</th><th>Actions</th></tr></thead>
             <tbody>
               {users.map((u) => (
@@ -147,6 +148,7 @@ export default function Settings() {
               ))}
             </tbody>
           </table>
+          </div>
         </div>
       )}
     </div>

@@ -137,7 +137,7 @@ export default function Dashboard() {
       <div className="two-col">
         <div className="panel">
           <div className="panel-header"><h3>Recent Donations</h3></div>
-          <table className="data-table">
+          <div className="table-scroll"><table className="data-table">
             <thead>
               <tr><th>Date</th><th>Name</th><th>Type</th><th>Amount</th><th>Mode</th></tr>
             </thead>
@@ -156,11 +156,12 @@ export default function Dashboard() {
               )}
             </tbody>
           </table>
+          </div>
         </div>
 
         <div className="panel">
           <div className="panel-header"><h3>Recent Expenses</h3></div>
-          <table className="data-table">
+          <div className="table-scroll"><table className="data-table">
             <thead>
               <tr><th>Date</th><th>Description</th><th>Amount</th><th>Status</th></tr>
             </thead>
@@ -178,13 +179,14 @@ export default function Dashboard() {
               )}
             </tbody>
           </table>
+          </div>
         </div>
       </div>
 
       {data.pendingVendorPayments.length > 0 && (
         <div className="panel">
           <div className="panel-header"><h3>⚠️ Pending Vendor Payments</h3></div>
-          <table className="data-table">
+          <div className="table-scroll"><table className="data-table">
             <thead>
               <tr><th>Vendor</th><th>Category</th><th>Agreed</th><th>Paid so far</th><th>Balance Due</th></tr>
             </thead>
@@ -200,6 +202,7 @@ export default function Dashboard() {
               ))}
             </tbody>
           </table>
+          </div>
         </div>
       )}
 

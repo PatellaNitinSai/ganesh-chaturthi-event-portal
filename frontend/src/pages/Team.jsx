@@ -63,7 +63,7 @@ export default function Team() {
       <div className="panel">
         <div className="panel-header"><h3>Committee & Volunteers</h3></div>
         {loading ? <div className="loading">Loading…</div> : (
-          <table className="data-table">
+          <div className="table-scroll"><table className="data-table">
             <thead><tr><th>Name</th><th>Role</th><th>Phone</th><th>Email</th><th>Actions</th></tr></thead>
             <tbody>
               {rows.map((r) => (
@@ -78,6 +78,7 @@ export default function Team() {
               {rows.length === 0 && <tr><td colSpan="5" className="empty-row">No team members added yet.</td></tr>}
             </tbody>
           </table>
+          </div>
         )}
       </div>
     </div>

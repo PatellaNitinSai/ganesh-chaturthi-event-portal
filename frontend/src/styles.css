@@ -522,3 +522,120 @@ button, input, select, textarea {
     grid-template-columns: 1fr;
   }
 }
+
+/* ---------- Polished responsive experience ---------- */
+:root {
+  --brand: #e8792b;
+  --brand-dark: #c95e16;
+  --ink: #1f2430;
+  --muted: #77788a;
+  --line: #ececf3;
+  --surface: #ffffff;
+  --shadow-sm: 0 2px 10px rgba(42, 26, 62, .05);
+  --shadow-md: 0 10px 28px rgba(42, 26, 62, .09);
+}
+
+html { scroll-behavior: smooth; }
+body { overflow-x: hidden; -webkit-tap-highlight-color: transparent; }
+button, input, select, textarea { touch-action: manipulation; }
+
+.main-area { min-width: 0; }
+.page-content { overscroll-behavior: contain; }
+
+.panel, .stat-card, .welcome-banner, .login-card, .announcement-item {
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+.panel:hover, .stat-card:hover { box-shadow: var(--shadow-sm); }
+
+.btn-primary, .btn-secondary, .btn-logout, .mobile-menu-btn, .sidebar-link {
+  transition: transform .16s ease, background-color .16s ease, box-shadow .16s ease;
+}
+.btn-primary:hover:not(:disabled), .btn-secondary:hover, .mobile-menu-btn:hover {
+  transform: translateY(-1px);
+}
+.btn-primary:active:not(:disabled), .btn-secondary:active, .mobile-menu-btn:active, .sidebar-link:active {
+  transform: translateY(0);
+}
+
+.grid-form input:focus, .grid-form select:focus, .grid-form textarea:focus,
+.login-form input:focus, .filters input:focus, .filters select:focus {
+  outline: none;
+  border-color: var(--brand);
+  box-shadow: 0 0 0 3px rgba(232,121,43,.13);
+}
+
+/* Tables become true touch-scroll regions instead of overflowing the viewport. */
+.table-scroll {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
+  scrollbar-width: thin;
+  scrollbar-color: #cfcfd9 transparent;
+  border-radius: 9px;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-x pan-y;
+}
+.table-scroll::-webkit-scrollbar { height: 6px; }
+.table-scroll::-webkit-scrollbar-track { background: transparent; }
+.table-scroll::-webkit-scrollbar-thumb { background: #cfcfd9; border-radius: 99px; }
+.table-scroll .data-table { width: max-content; min-width: 680px; }
+.table-scroll .data-table th { white-space: nowrap; }
+.table-scroll .data-table td { white-space: nowrap; }
+
+/* Make dense tables easier to use on phones. */
+@media (max-width: 600px) {
+  .table-scroll {
+    margin: 0 -2px;
+    padding-bottom: 4px;
+  }
+  .table-scroll::after {
+    content: 'Swipe → to see more';
+    display: block;
+    position: sticky;
+    left: 0;
+    width: max-content;
+    margin: 4px 0 0 auto;
+    padding: 3px 7px;
+    border-radius: 999px;
+    background: #f5f1fa;
+    color: #77718a;
+    font-size: 10px;
+    pointer-events: none;
+  }
+  .table-scroll .data-table { min-width: 720px; }
+  .table-scroll .data-table.nested { min-width: 600px; }
+
+  .panel-header { min-width: 0; }
+  .panel-header h3 { line-height: 1.3; }
+  .panel-header > * { min-width: 0; }
+  .form-actions button { min-height: 42px; }
+  .btn-primary, .btn-secondary { min-height: 42px; }
+
+  .sidebar {
+    width: min(290px, 88vw);
+  }
+
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    box-shadow: 0 2px 12px rgba(31,36,48,.05);
+  }
+
+  .page-content { padding-bottom: 28px; }
+}
+
+@media (max-width: 420px) {
+  .topbar-left { gap: 8px; }
+  .mobile-menu-btn { width: 38px; height: 38px; font-size: 20px; }
+  .stat-card { min-width: 0; }
+  .stat-label, .stat-sub { line-height: 1.35; }
+  .welcome-banner-title { overflow-wrap: anywhere; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; }
+}

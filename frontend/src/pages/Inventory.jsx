@@ -90,7 +90,7 @@ export default function Inventory() {
       <div className="panel">
         <div className="panel-header"><h3>Inventory List</h3></div>
         {loading ? <div className="loading">Loading…</div> : (
-          <table className="data-table">
+          <div className="table-scroll"><table className="data-table">
             <thead><tr><th>Item</th><th>Category</th><th>Qty</th><th>Unit Cost</th><th>Total Value</th><th>Source</th><th>Actions</th></tr></thead>
             <tbody>
               {rows.map((r) => (
@@ -110,6 +110,7 @@ export default function Inventory() {
               {rows.length === 0 && <tr><td colSpan="7" className="empty-row">No inventory items yet.</td></tr>}
             </tbody>
           </table>
+          </div>
         )}
       </div>
     </div>
