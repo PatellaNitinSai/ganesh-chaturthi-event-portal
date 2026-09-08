@@ -1,99 +1,1663 @@
-/* ===== GLOBAL SCROLL FIX ===== */
+/* =========================================================
+   GANESH CHATURTHI PORTAL
+   Complete Responsive UI + Scroll System
+   ========================================================= */
 
-html,
-body,
-#root {
+/* =========================================================
+   1. RESET / GLOBAL
+   ========================================================= */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
   min-height: 100%;
-  height: auto;
-  overflow-x: hidden;
-  overflow-y: auto;
+  width: 100%;
+  scroll-behavior: smooth;
 }
 
 body {
   margin: 0;
-  overflow-y: auto !important;
-}
-
-#root {
-  overflow-y: visible !important;
-}
-
-/* Main application must be allowed to grow */
-.app,
-.app-shell,
-.app-layout,
-.main-content,
-.content,
-.page-content {
-  min-height: 100vh;
-  height: auto !important;
-  overflow-y: visible !important;
-}
-
-/* Dashboard/page area */
-main {
-  min-height: 100vh;
-  height: auto !important;
-  overflow-y: visible !important;
-}
-
-/* Tables/cards should not force the whole page wider */
-.table-container,
-.table-wrapper,
-.data-table-container {
+  min-width: 0;
+  min-height: 100%;
   width: 100%;
-  max-width: 100%;
-  overflow-x: auto;
-  overflow-y: visible;
-  -webkit-overflow-scrolling: touch;
+  overflow-x: hidden;
+  overflow-y: auto;
+  background: #f7f7fb;
+  color: #20202b;
+  font-family:
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
-/* Prevent horizontal page overflow */
-* {
-  box-sizing: border-box;
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
 }
 
 img,
-svg {
+svg,
+video,
+canvas {
   max-width: 100%;
 }
 
-/* Mobile scrolling */
-@media (max-width: 768px) {
-  html,
-  body,
-  #root {
-    width: 100%;
-    min-height: 100%;
-    height: auto !important;
-    overflow-x: hidden !important;
-    overflow-y: auto !important;
-    -webkit-overflow-scrolling: touch;
-  }
+a {
+  color: inherit;
+  text-decoration: none;
+}
 
-  .app,
-  .app-shell,
-  .app-layout,
-  .main-content,
-  .content,
-  .page-content,
-  main {
-    height: auto !important;
-    min-height: 100vh;
-    overflow: visible !important;
-  }
+#root {
+  width: 100%;
+  min-height: 100vh;
+  overflow: visible;
+}
 
-  /* Tables scroll horizontally inside their own area */
-  table {
-    min-width: 650px;
-  }
+/* =========================================================
+   2. APP LAYOUT
+   ========================================================= */
 
+.app-shell {
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+  height: auto;
+  overflow: visible;
+  background: #f7f7fb;
+}
+
+.main-area {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 100vh;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  overflow: visible;
+}
+
+.main-content,
+.content,
+.page-content {
+  width: 100%;
+  min-width: 0;
+  min-height: calc(100vh - 68px);
+  height: auto;
+  overflow: visible;
+}
+
+/*
+  IMPORTANT:
+  Never put overflow-y:auto on the page wrapper.
+  The browser/document owns vertical scrolling.
+*/
+
+.page-content {
+  padding: 24px;
+}
+
+/* =========================================================
+   3. SIDEBAR
+   ========================================================= */
+
+.sidebar {
+  position: sticky;
+  top: 0;
+  left: 0;
+
+  width: 250px;
+  min-width: 250px;
+  height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+
+  background:
+    linear-gradient(
+      180deg,
+      #21152e 0%,
+      #1b1428 55%,
+      #17111f 100%
+    );
+
+  color: #fff;
+
+  z-index: 100;
+  overflow: hidden;
+
+  box-shadow: 4px 0 18px rgba(27, 20, 40, 0.08);
+}
+
+.sidebar-header {
+  flex: 0 0 auto;
+  padding: 22px 18px 18px;
+}
+
+.sidebar-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.sidebar-logo-icon {
+  width: 42px;
+  height: 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 12px;
+
+  background: linear-gradient(
+    135deg,
+    #f59b4a,
+    #e76c22
+  );
+
+  box-shadow:
+    0 7px 18px rgba(231, 108, 34, 0.25);
+}
+
+.sidebar-logo-text {
+  min-width: 0;
+}
+
+.sidebar-logo-title {
+  margin: 0;
+
+  font-size: 15px;
+  font-weight: 800;
+  line-height: 1.2;
+
+  color: #fff;
+}
+
+.sidebar-logo-subtitle {
+  margin-top: 3px;
+
+  font-size: 11px;
+  line-height: 1.3;
+
+  color: rgba(255, 255, 255, 0.55);
+}
+
+/* Navigation itself may scroll independently on very small screens */
+
+.sidebar-nav {
+  flex: 1 1 auto;
+  min-height: 0;
+
+  padding: 8px 10px 18px;
+
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,.2) transparent;
+}
+
+.sidebar-nav::-webkit-scrollbar {
+  width: 5px;
+}
+
+.sidebar-nav::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,.2);
+  border-radius: 999px;
+}
+
+.sidebar-section-title {
+  padding: 15px 10px 7px;
+
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+
+  color: rgba(255,255,255,.38);
+}
+
+.sidebar-link {
+  width: 100%;
+  min-height: 44px;
+
+  display: flex;
+  align-items: center;
+  gap: 11px;
+
+  padding: 10px 12px;
+
+  border: 0;
+  border-radius: 10px;
+
+  background: transparent;
+  color: rgba(255,255,255,.67);
+
+  text-align: left;
+
+  transition:
+    background-color .18s ease,
+    color .18s ease,
+    transform .18s ease;
+}
+
+.sidebar-link:hover {
+  background: rgba(255,255,255,.07);
+  color: #fff;
+}
+
+.sidebar-link.active {
+  background:
+    linear-gradient(
+      135deg,
+      rgba(242,130,48,.95),
+      rgba(220,91,27,.95)
+    );
+
+  color: #fff;
+
+  box-shadow:
+    0 7px 18px rgba(221,94,27,.22);
+}
+
+.sidebar-link:active {
+  transform: scale(.985);
+}
+
+.sidebar-footer {
+  flex: 0 0 auto;
+  padding: 14px;
+}
+
+/* =========================================================
+   4. TOPBAR
+   ========================================================= */
+
+.topbar {
+  width: 100%;
+  min-width: 0;
+  height: 68px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 24px;
+
+  background: rgba(255,255,255,.96);
+  border-bottom: 1px solid #ededf3;
+
+  position: sticky;
+  top: 0;
+  z-index: 80;
+
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.topbar-left,
+.topbar-right {
+  min-width: 0;
+
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.topbar-title {
+  min-width: 0;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  font-size: 18px;
+  font-weight: 750;
+
+  color: #242332;
+}
+
+.topbar-user {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+
+  color: #696879;
+  font-size: 13px;
+}
+
+.mobile-menu-btn {
+  display: none;
+
+  width: 40px;
+  height: 40px;
+
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid #e6e5ed;
+  border-radius: 10px;
+
+  background: #fff;
+  color: #272334;
+
+  transition:
+    transform .15s ease,
+    background .15s ease;
+}
+
+.mobile-menu-btn:hover {
+  background: #f8f7fb;
+}
+
+.mobile-menu-btn:active {
+  transform: scale(.95);
+}
+
+/* =========================================================
+   5. MOBILE SIDEBAR OVERLAY
+   ========================================================= */
+
+.mobile-overlay {
+  display: none;
+}
+
+/* =========================================================
+   6. WELCOME BANNER
+   ========================================================= */
+
+.welcome-banner {
+  width: 100%;
+  min-width: 0;
+
+  margin-bottom: 20px;
+  padding: 24px;
+
+  border-radius: 16px;
+
+  background:
+    radial-gradient(
+      circle at 90% 15%,
+      rgba(255,255,255,.24),
+      transparent 25%
+    ),
+    linear-gradient(
+      135deg,
+      #f19a4a 0%,
+      #e96e28 52%,
+      #d95520 100%
+    );
+
+  color: #fff;
+
+  box-shadow:
+    0 12px 30px rgba(226,101,35,.18);
+
+  overflow: hidden;
+}
+
+.welcome-banner-title {
+  margin: 0;
+
+  font-size: 26px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.welcome-banner-tagline {
+  max-width: 760px;
+
+  margin-top: 8px;
+
+  font-size: 14px;
+  line-height: 1.55;
+
+  color: rgba(255,255,255,.84);
+}
+
+.thank-you-box {
+  margin-top: 16px;
+}
+
+/* =========================================================
+   7. STAT CARDS
+   ========================================================= */
+
+.stat-grid {
+  width: 100%;
+  min-width: 0;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
+
+  gap: 16px;
+
+  margin-bottom: 20px;
+}
+
+.stat-card {
+  min-width: 0;
+
+  padding: 18px;
+
+  border: 1px solid #ececf2;
+  border-radius: 14px;
+
+  background: #fff;
+
+  box-shadow:
+    0 4px 16px rgba(35, 28, 50, .05);
+
+  overflow: hidden;
+
+  transition:
+    transform .18s ease,
+    box-shadow .18s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 10px 24px rgba(35,28,50,.09);
+}
+
+.stat-icon {
+  width: 38px;
+  height: 38px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 12px;
+
+  border-radius: 10px;
+
+  background: #f5f3fa;
+}
+
+.stat-label {
+  color: #777687;
+
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.stat-value {
+  margin-top: 4px;
+
+  font-size: 25px;
+  font-weight: 800;
+
+  color: #242332;
+
+  overflow-wrap: anywhere;
+}
+
+.stat-sub {
+  margin-top: 4px;
+
+  color: #9695a2;
+
+  font-size: 11px;
+}
+
+/* =========================================================
+   8. PANELS
+   ========================================================= */
+
+.panel {
+  width: 100%;
+  min-width: 0;
+
+  margin-bottom: 18px;
+  padding: 20px;
+
+  border: 1px solid #ececf2;
+  border-radius: 14px;
+
+  background: #fff;
+
+  box-shadow:
+    0 4px 16px rgba(35,28,50,.045);
+
+  overflow: hidden;
+}
+
+.panel-header {
+  width: 100%;
+  min-width: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 14px;
+
+  margin-bottom: 18px;
+}
+
+.panel-header h2,
+.panel-header h3 {
+  min-width: 0;
+
+  margin: 0;
+
+  color: #272536;
+
+  overflow-wrap: anywhere;
+}
+
+.panel-header h2 {
+  font-size: 18px;
+}
+
+.panel-header h3 {
+  font-size: 16px;
+}
+
+/* =========================================================
+   9. FORMS
+   ========================================================= */
+
+.grid-form {
+  width: 100%;
+  min-width: 0;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 14px 16px;
+}
+
+.grid-form > * {
+  min-width: 0;
+}
+
+.grid-form .span-2 {
+  grid-column: span 2;
+}
+
+.form-group {
+  min-width: 0;
+}
+
+.form-group label {
+  display: block;
+
+  margin-bottom: 6px;
+
+  color: #575666;
+
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.grid-form input,
+.grid-form select,
+.grid-form textarea,
+.filters input,
+.filters select {
+  width: 100%;
+  min-width: 0;
+
+  padding: 10px 12px;
+
+  border: 1px solid #dedde7;
+  border-radius: 9px;
+
+  background: #fff;
+
+  color: #292837;
+
+  outline: none;
+
+  transition:
+    border-color .18s ease,
+    box-shadow .18s ease;
+}
+
+.grid-form textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.grid-form input:focus,
+.grid-form select:focus,
+.grid-form textarea:focus,
+.filters input:focus,
+.filters select:focus {
+  border-color: #e8792b;
+
+  box-shadow:
+    0 0 0 3px rgba(232,121,43,.12);
+}
+
+.form-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  gap: 9px;
+
+  flex-wrap: wrap;
+}
+
+.form-error {
+  color: #c73737;
+  font-size: 12px;
+}
+
+.form-success {
+  color: #278344;
+  font-size: 12px;
+}
+
+/* =========================================================
+   10. BUTTONS
+   ========================================================= */
+
+.btn-primary,
+.btn-secondary,
+.btn-danger,
+.btn-logout {
+  min-height: 40px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  padding: 9px 15px;
+
+  border-radius: 9px;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  transition:
+    transform .15s ease,
+    box-shadow .15s ease,
+    background .15s ease;
+}
+
+.btn-primary {
+  border: 0;
+
+  background:
+    linear-gradient(
+      135deg,
+      #ee8b3c,
+      #dd641f
+    );
+
+  color: #fff;
+
+  box-shadow:
+    0 5px 13px rgba(222,100,31,.2);
+}
+
+.btn-secondary {
+  border: 1px solid #dedde7;
+
+  background: #fff;
+  color: #454353;
+}
+
+.btn-danger {
+  border: 0;
+
+  background: #fff0f0;
+  color: #c33434;
+}
+
+.btn-primary:hover,
+.btn-secondary:hover,
+.btn-danger:hover {
+  transform: translateY(-1px);
+}
+
+.btn-primary:active,
+.btn-secondary:active,
+.btn-danger:active {
+  transform: translateY(0);
+}
+
+button:disabled {
+  opacity: .55;
+  cursor: not-allowed;
+}
+
+/* =========================================================
+   11. FILTERS
+   ========================================================= */
+
+.filters {
+  width: 100%;
+  min-width: 0;
+
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  margin-bottom: 15px;
+
+  flex-wrap: wrap;
+}
+
+.filters > * {
+  min-width: 0;
+}
+
+.filters input,
+.filters select {
+  width: auto;
+  min-width: 150px;
+  flex: 1 1 160px;
+}
+
+/* =========================================================
+   12. TABLE SCROLLING
+   ========================================================= */
+
+/*
+  THIS IS THE IMPORTANT PART.
+
+  Tables scroll horizontally INSIDE the panel.
+  The page remains vertically scrollable.
+*/
+
+.table-scroll,
+.table-container,
+.table-wrapper,
+.data-table-container {
+  display: block;
+
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+
+  overflow-x: auto;
+  overflow-y: hidden;
+
+  -webkit-overflow-scrolling: touch;
+
+  overscroll-behavior-x: contain;
+
+  scrollbar-width: thin;
+  scrollbar-color: #c8c6d0 transparent;
+}
+
+.table-scroll::-webkit-scrollbar,
+.table-container::-webkit-scrollbar,
+.table-wrapper::-webkit-scrollbar,
+.data-table-container::-webkit-scrollbar {
+  height: 7px;
+}
+
+.table-scroll::-webkit-scrollbar-track,
+.table-container::-webkit-scrollbar-track,
+.table-wrapper::-webkit-scrollbar-track,
+.data-table-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.table-scroll::-webkit-scrollbar-thumb,
+.table-container::-webkit-scrollbar-thumb,
+.table-wrapper::-webkit-scrollbar-thumb,
+.data-table-container::-webkit-scrollbar-thumb {
+  background: #c8c6d0;
+  border-radius: 999px;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+
+  font-size: 12px;
+}
+
+.table-scroll .data-table,
+.table-container .data-table,
+.table-wrapper .data-table,
+.data-table-container .data-table {
+  min-width: 700px;
+}
+
+.data-table th {
+  padding: 11px 12px;
+
+  border-bottom: 1px solid #e9e8ef;
+
+  background: #faf9fc;
+
+  color: #686777;
+
+  font-size: 11px;
+  font-weight: 750;
+
+  text-align: left;
+
+  white-space: nowrap;
+}
+
+.data-table td {
+  padding: 12px;
+
+  border-bottom: 1px solid #efeff4;
+
+  color: #363543;
+
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+.data-table tbody tr {
+  transition: background .15s ease;
+}
+
+.data-table tbody tr:hover {
+  background: #faf9fc;
+}
+
+.data-table .actions {
+  white-space: nowrap;
+}
+
+/* =========================================================
+   13. TABLE MOBILE HINT
+   ========================================================= */
+
+@media (max-width: 600px) {
+  .table-scroll,
   .table-container,
   .table-wrapper,
   .data-table-container {
-    overflow-x: auto !important;
-    overflow-y: visible !important;
+    position: relative;
+
+    padding-bottom: 4px;
+
+    touch-action: pan-x pan-y;
+  }
+
+  .table-scroll .data-table,
+  .table-container .data-table,
+  .table-wrapper .data-table,
+  .data-table-container .data-table {
+    min-width: 760px;
+  }
+}
+
+/* =========================================================
+   14. TWO COLUMN / DASHBOARD AREAS
+   ========================================================= */
+
+.two-col {
+  width: 100%;
+  min-width: 0;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 18px;
+}
+
+.two-col > * {
+  min-width: 0;
+}
+
+.three-col {
+  width: 100%;
+  min-width: 0;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+
+  gap: 18px;
+}
+
+.three-col > * {
+  min-width: 0;
+}
+
+/* =========================================================
+   15. ROW HELPERS
+   ========================================================= */
+
+.row-between {
+  min-width: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 12px;
+}
+
+.row-between > * {
+  min-width: 0;
+}
+
+.muted {
+  color: #858391;
+}
+
+.loading {
+  padding: 30px;
+
+  text-align: center;
+
+  color: #858391;
+}
+
+/* =========================================================
+   16. ANNOUNCEMENTS
+   ========================================================= */
+
+.announcement-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.announcement-item {
+  min-width: 0;
+
+  padding: 15px;
+
+  border: 1px solid #ecebf2;
+  border-radius: 11px;
+
+  background: #faf9fc;
+}
+
+.announcement-item p {
+  margin: 8px 0 0;
+
+  color: #5d5b69;
+
+  font-size: 13px;
+  line-height: 1.55;
+
+  overflow-wrap: anywhere;
+}
+
+/* =========================================================
+   17. REPORTS
+   ========================================================= */
+
+.report-buttons {
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  flex-wrap: wrap;
+}
+
+/* =========================================================
+   18. VENDOR / DETAIL
+   ========================================================= */
+
+.vendor-detail {
+  width: 100%;
+  min-width: 0;
+
+  margin-top: 12px;
+}
+
+.nested {
+  min-width: 500px;
+}
+
+/* =========================================================
+   19. LOGIN
+   ========================================================= */
+
+.login-screen {
+  width: 100%;
+  min-height: 100vh;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 24px;
+
+  background:
+    radial-gradient(
+      circle at 20% 10%,
+      rgba(240,145,75,.14),
+      transparent 30%
+    ),
+    linear-gradient(
+      135deg,
+      #f8f7fb,
+      #f3f1f7
+    );
+}
+
+.login-card {
+  width: min(440px, 100%);
+
+  padding: 32px;
+
+  border: 1px solid #eceaf2;
+  border-radius: 18px;
+
+  background: #fff;
+
+  box-shadow:
+    0 20px 55px rgba(38,28,52,.11);
+}
+
+.login-card h1 {
+  margin: 0 0 8px;
+
+  font-size: 25px;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.login-form input {
+  width: 100%;
+
+  padding: 12px 13px;
+
+  border: 1px solid #dedde7;
+  border-radius: 9px;
+
+  outline: none;
+}
+
+/* =========================================================
+   20. CHARTS
+   ========================================================= */
+
+.recharts-responsive-container {
+  min-width: 0 !important;
+}
+
+.chart-container {
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
+}
+
+/* =========================================================
+   21. PREVENT COMMON FLEX / GRID OVERFLOW
+   ========================================================= */
+
+.app-shell *,
+.main-area *,
+.page-content *,
+.panel *,
+.stat-card * {
+  max-width: 100%;
+}
+
+.panel-header > *,
+.row-between > * {
+  min-width: 0;
+}
+
+pre,
+code {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+/* =========================================================
+   22. DESKTOP
+   ========================================================= */
+
+@media (min-width: 1200px) {
+  .page-content {
+    padding: 28px;
+  }
+
+  .stat-grid {
+    gap: 18px;
+  }
+
+  .panel {
+    padding: 22px;
+  }
+}
+
+/* =========================================================
+   23. TABLET
+   ========================================================= */
+
+@media (max-width: 1100px) {
+  .sidebar {
+    width: 230px;
+    min-width: 230px;
+  }
+
+  .stat-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+  .three-col {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+  .page-content {
+    padding: 20px;
+  }
+}
+
+/* =========================================================
+   24. MOBILE NAVIGATION
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+  /*
+    Sidebar becomes a proper mobile drawer.
+    It does NOT lock document scrolling.
+  */
+
+  .sidebar {
+    position: fixed;
+
+    top: 0;
+    left: 0;
+    bottom: 0;
+
+    width: min(285px, 88vw);
+    min-width: 0;
+
+    height: 100dvh;
+
+    transform: translateX(-105%);
+
+    transition:
+      transform .23s ease;
+
+    z-index: 1000;
+
+    box-shadow:
+      10px 0 35px rgba(0,0,0,.2);
+  }
+
+  .sidebar.mobile-open {
+    transform: translateX(0);
+  }
+
+  .mobile-overlay {
+    position: fixed;
+
+    inset: 0;
+
     width: 100%;
+    height: 100%;
+
+    display: block;
+
+    border: 0;
+
+    background: rgba(20,15,30,.48);
+
+    z-index: 999;
+  }
+
+  .mobile-menu-btn {
+    display: inline-flex;
+  }
+
+  .app-shell {
+    display: block;
+    min-height: 100vh;
+  }
+
+  .main-area {
+    width: 100%;
+    min-height: 100vh;
+  }
+
+  .topbar {
+    height: 60px;
+
+    padding: 0 16px;
+  }
+
+  .topbar-title {
+    font-size: 16px;
+  }
+
+  .page-content {
+    min-height: calc(100vh - 60px);
+
+    padding: 18px;
+  }
+
+  .two-col {
+    grid-template-columns: 1fr;
+  }
+
+  .three-col {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+  .grid-form {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+  .grid-form .span-2 {
+    grid-column: span 2;
+  }
+}
+
+/* =========================================================
+   25. MOBILE
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+  .page-content {
+    padding: 14px;
+  }
+
+  .welcome-banner {
+    padding: 20px;
+    border-radius: 13px;
+  }
+
+  .welcome-banner-title {
+    font-size: 22px;
+  }
+
+  .stat-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+
+    gap: 10px;
+  }
+
+  .stat-card {
+    padding: 14px;
+  }
+
+  .stat-value {
+    font-size: 21px;
+  }
+
+  .panel {
+    padding: 15px;
+    border-radius: 12px;
+  }
+
+  .panel-header {
+    align-items: flex-start;
+
+    flex-wrap: wrap;
+  }
+
+  .grid-form {
+    grid-template-columns: 1fr;
+  }
+
+  .grid-form .span-2 {
+    grid-column: span 1;
+  }
+
+  .form-actions {
+    justify-content: stretch;
+  }
+
+  .form-actions button {
+    flex: 1 1 140px;
+  }
+
+  .filters {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filters input,
+  .filters select {
+    width: 100%;
+    flex: none;
+  }
+
+  .three-col {
+    grid-template-columns: 1fr;
+  }
+
+  .topbar-user {
+    display: none;
+  }
+}
+
+/* =========================================================
+   26. SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+  html,
+  body {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .page-content {
+    padding: 10px;
+    padding-bottom: 28px;
+  }
+
+  .topbar {
+    padding: 0 11px;
+  }
+
+  .topbar-left {
+    gap: 8px;
+  }
+
+  .topbar-title {
+    max-width: calc(100vw - 80px);
+
+    font-size: 15px;
+  }
+
+  .mobile-menu-btn {
+    width: 38px;
+    height: 38px;
+  }
+
+  .welcome-banner {
+    padding: 17px;
+    margin-bottom: 12px;
+
+    border-radius: 11px;
+  }
+
+  .welcome-banner-title {
+    font-size: 20px;
+
+    overflow-wrap: anywhere;
+  }
+
+  .welcome-banner-tagline {
+    font-size: 12px;
+  }
+
+  .stat-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .stat-card {
+    display: grid;
+
+    grid-template-columns: auto minmax(0, 1fr);
+
+    column-gap: 12px;
+
+    align-items: center;
+  }
+
+  .stat-card .stat-icon {
+    grid-row: span 3;
+
+    margin-bottom: 0;
+  }
+
+  .stat-label,
+  .stat-value,
+  .stat-sub {
+    min-width: 0;
+  }
+
+  .stat-value {
+    font-size: 20px;
+  }
+
+  .panel {
+    margin-bottom: 12px;
+    padding: 12px;
+  }
+
+  .panel-header {
+    margin-bottom: 14px;
+  }
+
+  .panel-header h2 {
+    font-size: 16px;
+  }
+
+  .panel-header h3 {
+    font-size: 14px;
+  }
+
+  .grid-form {
+    gap: 12px;
+  }
+
+  .form-actions {
+    width: 100%;
+  }
+
+  .form-actions button {
+    width: 100%;
+    flex: 1 1 100%;
+  }
+
+  .report-buttons {
+    width: 100%;
+  }
+
+  .report-buttons button {
+    flex: 1 1 100%;
+  }
+
+  .row-between {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .row-between > button {
+    width: 100%;
+  }
+
+  .login-screen {
+    min-height: 100dvh;
+    padding: 12px;
+  }
+
+  .login-card {
+    padding: 24px 17px;
+    border-radius: 14px;
+  }
+
+  .announcement-item {
+    padding: 13px;
+  }
+
+  .announcement-item p {
+    font-size: 12px;
+  }
+}
+
+/* =========================================================
+   27. VERY SMALL PHONES
+   ========================================================= */
+
+@media (max-width: 420px) {
+
+  .page-content {
+    padding: 8px;
+  }
+
+  .panel {
+    padding: 10px;
+  }
+
+  .welcome-banner {
+    padding: 15px;
+  }
+
+  .welcome-banner-title {
+    font-size: 18px;
+  }
+
+  .mobile-menu-btn {
+    width: 36px;
+    height: 36px;
+  }
+
+  .login-card {
+    padding: 20px 14px;
+  }
+
+  .data-table th,
+  .data-table td {
+    padding: 10px;
+  }
+}
+
+/* =========================================================
+   28. TOUCH DEVICES
+   ========================================================= */
+
+@media (hover: none) and (pointer: coarse) {
+
+  button,
+  .sidebar-link {
+    min-height: 42px;
+  }
+
+  .table-scroll,
+  .table-container,
+  .table-wrapper,
+  .data-table-container {
     -webkit-overflow-scrolling: touch;
   }
+
+  .data-table tbody tr:hover {
+    background: transparent;
+  }
+}
+
+/* =========================================================
+   29. ACCESSIBILITY / REDUCED MOTION
+   ========================================================= */
+
+:focus-visible {
+  outline: 3px solid rgba(232,121,43,.35);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+}
+
+/* =========================================================
+   30. FINAL SAFETY OVERRIDES
+   ========================================================= */
+
+/*
+  These intentionally prevent accidental CSS from another
+  component from trapping the page inside a fixed-height box.
+*/
+
+html,
+body,
+#root {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.app-shell,
+.main-area,
+.main-content,
+.content,
+.page-content {
+  height: auto;
+  overflow: visible;
+}
+
+main {
+  height: auto;
+  min-height: 0;
+  overflow: visible;
+}
+
+/*
+  Horizontal scrolling belongs ONLY to tables/data regions.
+*/
+
+.table-scroll,
+.table-container,
+.table-wrapper,
+.data-table-container {
+  overflow-x: auto;
+  overflow-y: hidden;
+  max-width: 100%;
+}
+
+/*
+  Long words/URLs should never create page-wide horizontal
+  overflow.
+*/
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+span,
+label,
+div {
+  overflow-wrap: break-word;
 }
